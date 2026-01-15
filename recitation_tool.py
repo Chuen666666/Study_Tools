@@ -1,12 +1,14 @@
 from os import name, system
 from random import shuffle
 
+
 qa, wrong = {}, []
+
 
 def test(q: str, a: str) -> None:
     amount = int(input(f'請問有多少個 {q} 要背：'))
 
-    for i in range(1, amount+1):
+    for i in range(1, amount + 1):
         que = input(f'請輸入第 {i} 個 {q}：').lower()
         ans = input(f'請輸入其 {a}：').lower()
         qa[que] = ans
@@ -34,19 +36,21 @@ def test(q: str, a: str) -> None:
     else:
         print(f'\n可惜錯了{len(wrong) // 3}題：')
         for j in range(0, len(wrong), 3):
-            print(f'題目：{wrong[j]} | 答案：{wrong[j+1]} | 作答：{wrong[j+2]}')
+            print(f'題目：{wrong[j]} | 答案：{wrong[j + 1]} | 作答：{wrong[j + 2]}')
 
     print('請再接再厲！')
 
+
 def main() -> None:
     match input('請問你要背什麼 (A)英文單字 (B)國文註釋\n:').upper():
-        case'A':
+        case 'A':
             test('英文單字', '中文')
         case 'B':
             test('詞語', '註釋')
         case _:
             print('滾')
             return
+
 
 if __name__ == '__main__':
     try:

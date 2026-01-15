@@ -4,6 +4,7 @@ from math import gcd
 from random import sample
 from time import sleep
 
+
 def operations() -> None:
     print('接下來請直接輸入答案')
     sleep(1)
@@ -12,68 +13,71 @@ def operations() -> None:
     print('答對得 1 分，答錯倒扣 1 分，無時間限制')
     sleep(1)
 
-    count = input('請選擇你要訓練的內容 (A)加法 (B)減法 (C)乘法 (D)指數\n:').upper()
+    content_choice = input('請選擇訓練內容 (A)加法 (B)減法 (C)乘法 (D)指數\n:').upper()
     score = 0
-
-    match count:
-        case 'A':
-            sign1, sign2 = '被加數', '加數'
-        case 'B':
-            sign1, sign2 = '被減數', '減數'
-        case 'C':
-            sign1, sign2 = '被乘數', '乘數'
-        case 'D':
-            sign1, sign2 = '底數', '指數'
-
-    M = int(input(f'請輸入{sign1}範圍（輸入正整數，範圍即為"0~該數字"）：'))
-    N = int(input(f'請輸入{sign2}範圍（輸入正整數，範圍即為"0~該數字"）：'))
-    sleep(1)
+    limit = int(input('請輸入數值範圍：'))
 
     while True:
-        num1, num2 = sample(range(1, N), 2)
-        match count:
+        num1, num2 = sample(range(1, limit), 2)
+
+        match content_choice:
             case 'A':
-                que, ans = int(input(f'{num1} + {num2} = ')), num1 + num2
+                symbol, ans = '+', num1 + num2
             case 'B':
-                que, ans = int(input(f'{num1} - {num2} = ')), num1 - num2
+                symbol, ans = '-', num1 - num2
             case 'C':
-                que, ans = int(input(f'{num1} * {num2} = ')), num1 * num2
+                symbol, ans = '*', num1 * num2
             case 'D':
-                que, ans = int(input(f'{num1} ^ {num2} = ')), num1 ** num2
-        if que == ans:
+                symbol, ans = '^', num1**num2
+            case _:
+                print('無效的選擇，請重新啟動')
+                break
+
+        try:
+            user_input = int(input(f'{num1} {symbol} {num2} = '))
+        except ValueError:
+            print('請輸入數字！')
+            continue
+
+        if user_input == ans:
             score += 1
             print(f'恭喜答對了，你獲得了 1 分\n你目前有 {score} 分')
         else:
             score -= 1
             print(f'可惜答錯了，你失去了 1 分，正確答案為：{ans}\n你目前有 {score} 分')
+
         sleep(1)
+
 
 def two_point_form() -> int | tuple[int]:
     t = int(input('請問一題要幾秒（建議從 7 秒開始練習）：'))
-    M = int(input('數值範圍（建議 "7", 得到 -7~7 的整數）：'))
+    m = int(input('數值範圍（建議 "7", 得到 -7~7 的整數）：'))
 
     print('接下來無需輸入，在心裡求得答案後，再看顯示出的答案是否如預期即可')
     sleep(1)
 
     while True:
-        x1, y1, x2, y2 = sample(range(-M, M+1), 4)
+        x1, y1, x2, y2 = sample(range(-m, m + 1), 4)
         if x1 == x2 and x2 == y2:
             continue
 
         sleep(1)
         print(f'({x1},{y1}), ({x2},{y2})，求過兩點的方程式')
 
-        d = [abs(x1-x2), abs(y1-y2)]
+        d = [abs(x1 - x2), abs(y1 - y2)]
         g = gcd(*d)
-        d = [d[0]//g, d[1]//g]
-        c = d[1]*x1 - d[0]*y1
+        d = [d[0] // g, d[1] // g]
+        c = d[1] * x1 - d[0] * y1
 
         sleep(t)
         if d[0] == 0 or d[1] == 0:
             print(f'x = {x1}' if d[0] == 0 else f'y = {y1}')
         else:
-            print(f'{d[1] if d[1]!=1 else ""}x {"-" if d[0]>0 else "+"} {abs(d[0]) if abs(d[0])!=1 else ""}y = {c}')
+            print(
+                f'{d[1] if d[1] != 1 else ""}x {"-" if d[0] > 0 else "+"} {abs(d[0]) if abs(d[0]) != 1 else ""}y = {c}'
+            )
         sleep(1)
+
 
 def main() -> None:
     match input('請問你要練習什麼 (A)基本運算/次方運算 (B)兩點式練習\n:').upper():
@@ -83,6 +87,7 @@ def main() -> None:
             two_point_form()
         case _:
             print('你是來亂的嗎？')
+
 
 if __name__ == '__main__':
     try:
